@@ -67,9 +67,8 @@ $(function() {
               * clicked and does it hide when clicked again.
               */
         it('Menu displays and hides when clicked', function() {
-            $(".menu-icon-link").click(function(){expect($(body).('menu-hidden')).toBe(true); });
-            $(".menu-icon-link").click(function(){expect($(body).('menu-hidden')).toBe(false); });
-
+            $(".menu-icon-link").trigger('click'); expect($('body').hasClass('menu-hidden')).toBe(true);
+            $(".menu-icon-link").trigger('click'); expect($('body').hasClass('menu-hidden')).toBe(false);
         });
     });
 
@@ -86,7 +85,7 @@ $(function() {
         }, 1000);
 
         it('at least a single entry in the feed container', function() {
-            expect($('.entry').length).toBeGreaterThan(0);
+            expect($('.feed .entry').length).toBeGreaterThan(0);
         });
     });
 
@@ -97,8 +96,13 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+        var feed1 = $('.feed').html();
+        loadFeed(1, done);
+
+        var feed2 = $('.feed').html();
+
         it('when a new feed is loaded', function() {
-            expect($('.feed').html()).not.toBe(null);
+            expect(feed1).not.toBe(feed2);
         });
     });
 
