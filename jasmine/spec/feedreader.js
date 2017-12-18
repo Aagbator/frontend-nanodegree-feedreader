@@ -67,8 +67,11 @@ $(function() {
               * clicked and does it hide when clicked again.
               */
         it('Menu displays and hides when clicked', function() {
-            $(".menu-icon-link").trigger('click'); expect($('body').hasClass('menu-hidden')).toBe(true);
-            $(".menu-icon-link").trigger('click'); expect($('body').hasClass('menu-hidden')).toBe(false);
+            $(".menu-icon-link").trigger('click');
+            expect($('body').hasClass('menu-hidden')).toBe(true);
+
+            $(".menu-icon-link").trigger('click');
+            expect($('body').hasClass('menu-hidden')).toBe(false);
         });
     });
 
@@ -92,17 +95,29 @@ $(function() {
         /* TODO: Write a new test suite named "New Feed Selection" */
     describe('New Feed Selection', function() {
 
+        var feed0 = '';
+        var feed1 = '';
+
+        beforeEach(function(done) {
+            loadFeed(0, function() {
+                // do stuff with feed 0
+                  feed0 = $('.feed').html();
+                // nested to ensure it runs after feed 0 done loading
+                loadFeed(1, function() {
+                    // do stuff with feed 1
+                    var feed1 = $('.feed').html();
+                    // call done after feed 1 done loading to make sure tests have variables
+                    done();
+                });
+            });
+        });
+
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-        var feed1 = $('.feed').html();
-        loadFeed(1, done);
-
-        var feed2 = $('.feed').html();
-
         it('when a new feed is loaded', function() {
-            expect(feed1).not.toBe(feed2);
+            expect(feed0).not.toBe(feed1);
         });
     });
 
